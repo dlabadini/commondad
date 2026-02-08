@@ -12,6 +12,7 @@ import React, {
   useContext,
   useEffect,
   useOptimistic,
+  useState,
 } from "react";
 
 type UpdateType = "plus" | "minus" | "delete";
@@ -32,6 +33,7 @@ type CartAction =
 
 type CartContextType = {
   cart: Cart | undefined;
+  isMockMode: boolean;
   setCart: (cart: Cart | undefined) => void;
   updateCartItem: (merchandiseId: string, updateType: UpdateType) => void;
   addCartItem: (variant: ProductVariant, product: Product) => void;
@@ -203,36 +205,48 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
 export function CartProvider({
   children,
   initialCart,
+  isMockMode = false,
 }: {
   children: React.ReactNode;
   initialCart: Cart | undefined;
+  isMockMode?: boolean;
 }) {
-  // Keep the provider renderable during prerender by fetching request-scoped cart
-  // data after hydration (cookies are request-specific and block SSG in Next 16).
+  // Persistent base state — survives after transitions complete.
+  // `useOptimistic` reverts to this value when no transition is pending,
+  // so we keep it in sync with every cart mutation.
+  const [cart, setCartState] = useState<Cart | undefined>(initialCart);
   const [optimisticCart, updateOptimisticCart] = useOptimistic(
-    initialCart,
+    cart,
     cartReducer,
   );
 
-  const setCart = (cart: Cart | undefined) => {
-    updateOptimisticCart({ type: "SET_CART", payload: { cart } });
+  const setCart = (newCart: Cart | undefined) => {
+    setCartState(newCart);
   };
 
   const updateCartItem = (merchandiseId: string, updateType: UpdateType) => {
-    updateOptimisticCart({
-      type: "UPDATE_ITEM",
+    const action = {
+      type: "UPDATE_ITEM" as const,
       payload: { merchandiseId, updateType },
-    });
+    };
+    updateOptimisticCart(action);
+    setCartState((prev) => cartReducer(prev, action));
   };
 
   const addCartItem = (variant: ProductVariant, product: Product) => {
-    updateOptimisticCart({ type: "ADD_ITEM", payload: { variant, product } });
+    const action = {
+      type: "ADD_ITEM" as const,
+      payload: { variant, product },
+    };
+    updateOptimisticCart(action);
+    setCartState((prev) => cartReducer(prev, action));
   };
 
+  // Fetch the cart after hydration (cookies are request-specific and block SSG in Next 16).
   useEffect(() => {
     if (initialCart) return;
     getOrCreateCart()
-      .then((cart) => setCart(cart))
+      .then((fetchedCart) => setCart(fetchedCart))
       .catch(() => {
         // Leave cart empty; UI will behave as "no cart" and can retry later.
       });
@@ -240,7 +254,7 @@ export function CartProvider({
 
   return (
     <CartContext.Provider
-      value={{ cart: optimisticCart, setCart, updateCartItem, addCartItem }}
+      value={{ cart: optimisticCart, isMockMode, setCart, updateCartItem, addCartItem }}
     >
       {children}
     </CartContext.Provider>

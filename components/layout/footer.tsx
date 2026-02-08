@@ -8,9 +8,9 @@ const { SITE_NAME } = process.env;
 export default async function Footer() {
   return (
     <footer className="w-full border-t border-neutral-200 text-sm text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
-      <div className="mx-auto w-full max-w-7xl px-6 py-12 text-sm md:px-4 min-[1320px]:px-0">
-        <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-16">
-          <div className="flex items-center gap-2">
+      <div className="mx-auto w-full px-6 py-12 text-sm md:px-4 lg:px-6 xl:px-12 2xl:px-20">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-6 lg:items-start">
+          <div className="flex items-center gap-2 lg:col-span-1">
             <Link
               className="flex items-center gap-2 text-black dark:text-white"
               href="/"
@@ -167,7 +167,7 @@ export default async function Footer() {
               </li>
             </ul>
           </div>
-          <div className="md:ml-auto">
+          <div className="flex justify-end lg:col-span-1">
             <ThemeToggle />
           </div>
         </div>

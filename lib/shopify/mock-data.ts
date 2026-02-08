@@ -388,10 +388,14 @@ export const mockPages: Page[] = [
   },
 ];
 
-export function createMockCart(): Cart {
+// ── In-memory mock cart (persists for dev-server lifetime) ──────────
+
+let mockCartState: Cart | null = null;
+
+function emptyCart(): Cart {
   return {
     id: "mock-cart",
-    checkoutUrl: "/checkout",
+    checkoutUrl: "",
     totalQuantity: 0,
     lines: [],
     cost: {
@@ -400,4 +404,111 @@ export function createMockCart(): Cart {
       totalTaxAmount: { amount: "0", currencyCode: "USD" },
     },
   };
+}
+
+function recalcTotals(cart: Cart): void {
+  cart.totalQuantity = cart.lines.reduce((sum, l) => sum + l.quantity, 0);
+  const total = cart.lines.reduce(
+    (sum, l) => sum + Number(l.cost.totalAmount.amount),
+    0,
+  );
+  const currency = cart.lines[0]?.cost.totalAmount.currencyCode ?? "USD";
+  cart.cost = {
+    subtotalAmount: { amount: total.toString(), currencyCode: currency },
+    totalAmount: { amount: total.toString(), currencyCode: currency },
+    totalTaxAmount: { amount: "0", currencyCode: currency },
+  };
+}
+
+function findVariant(merchandiseId: string) {
+  for (const product of mockProducts) {
+    const variant = product.variants.find((v) => v.id === merchandiseId);
+    if (variant) return { product, variant };
+  }
+  return undefined;
+}
+
+export function createMockCart(): Cart {
+  mockCartState = emptyCart();
+  return structuredClone(mockCartState);
+}
+
+export function getMockCart(): Cart | null {
+  return mockCartState ? structuredClone(mockCartState) : null;
+}
+
+export function addToMockCart(
+  lines: { merchandiseId: string; quantity: number }[],
+): Cart {
+  if (!mockCartState) mockCartState = emptyCart();
+  for (const { merchandiseId, quantity } of lines) {
+    const existing = mockCartState.lines.find(
+      (l) => l.merchandise.id === merchandiseId,
+    );
+    if (existing) {
+      const found = findVariant(merchandiseId);
+      if (found) {
+        existing.quantity += quantity;
+        existing.cost.totalAmount.amount = (
+          Number(found.variant.price.amount) * existing.quantity
+        ).toString();
+      }
+    } else {
+      const found = findVariant(merchandiseId);
+      if (found) {
+        const { product, variant } = found;
+        mockCartState.lines.push({
+          id: `mock-line-${Date.now()}`,
+          quantity,
+          cost: {
+            totalAmount: {
+              amount: (Number(variant.price.amount) * quantity).toString(),
+              currencyCode: variant.price.currencyCode,
+            },
+          },
+          merchandise: {
+            id: variant.id,
+            title: variant.title,
+            selectedOptions: variant.selectedOptions,
+            product: {
+              id: product.id,
+              handle: product.handle,
+              title: product.title,
+              featuredImage: product.featuredImage,
+            },
+          },
+        });
+      }
+    }
+  }
+  recalcTotals(mockCartState);
+  return structuredClone(mockCartState);
+}
+
+export function removeFromMockCart(lineIds: string[]): Cart {
+  if (!mockCartState) mockCartState = emptyCart();
+  mockCartState.lines = mockCartState.lines.filter(
+    (l) => !lineIds.includes(l.id!),
+  );
+  recalcTotals(mockCartState);
+  return structuredClone(mockCartState);
+}
+
+export function updateMockCart(
+  lines: { id: string; merchandiseId: string; quantity: number }[],
+): Cart {
+  if (!mockCartState) mockCartState = emptyCart();
+  for (const { id, merchandiseId, quantity } of lines) {
+    const lineItem = mockCartState.lines.find(
+      (l) => l.id === id || l.merchandise.id === merchandiseId,
+    );
+    if (lineItem) {
+      const unitPrice =
+        Number(lineItem.cost.totalAmount.amount) / lineItem.quantity;
+      lineItem.quantity = quantity;
+      lineItem.cost.totalAmount.amount = (unitPrice * quantity).toString();
+    }
+  }
+  recalcTotals(mockCartState);
+  return structuredClone(mockCartState);
 }

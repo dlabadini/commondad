@@ -22,7 +22,7 @@ type MerchandiseSearchParams = {
 };
 
 export default function CartModal() {
-  const { cart, updateCartItem } = useCart();
+  const { cart, isMockMode, updateCartItem } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const quantityRef = useRef(cart?.totalQuantity);
   const openCart = () => setIsOpen(true);
@@ -209,9 +209,18 @@ export default function CartModal() {
                       />
                     </div>
                   </div>
-                  <form action={redirectToCheckout}>
-                    <CheckoutButton />
-                  </form>
+                  {isMockMode ? (
+                    <button
+                      className="block w-full cursor-not-allowed rounded-full bg-neutral-400 p-3 text-center text-sm font-medium text-white dark:bg-neutral-600"
+                      disabled
+                    >
+                      Checkout unavailable in dev mode
+                    </button>
+                  ) : (
+                    <form action={redirectToCheckout}>
+                      <CheckoutButton />
+                    </form>
+                  )}
                 </div>
               )}
             </Dialog.Panel>

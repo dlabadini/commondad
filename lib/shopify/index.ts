@@ -49,11 +49,15 @@ import {
   ShopifyUpdateCartOperation,
 } from "./types";
 import {
+  addToMockCart,
   createMockCart,
+  getMockCart,
   mockCollections,
   mockMenus,
   mockPages,
   mockProducts,
+  removeFromMockCart,
+  updateMockCart,
 } from "./mock-data";
 import { getShopifyRuntimeConfig } from "./runtime";
 
@@ -233,11 +237,7 @@ export async function createCart(): Promise<Cart> {
 export async function addToCart(
   lines: { merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
-  if (useMockShopify) {
-    const cart = createMockCart();
-    cart.totalQuantity = lines.reduce((sum, l) => sum + l.quantity, 0);
-    return cart;
-  }
+  if (useMockShopify) return addToMockCart(lines);
   const cartId = (await cookies()).get("cartId")?.value!;
   const res = await shopifyFetch<ShopifyAddToCartOperation>({
     query: addToCartMutation,
@@ -250,7 +250,7 @@ export async function addToCart(
 }
 
 export async function removeFromCart(lineIds: string[]): Promise<Cart> {
-  if (useMockShopify) return createMockCart();
+  if (useMockShopify) return removeFromMockCart(lineIds);
   const cartId = (await cookies()).get("cartId")?.value!;
   const res = await shopifyFetch<ShopifyRemoveFromCartOperation>({
     query: removeFromCartMutation,
@@ -266,11 +266,7 @@ export async function removeFromCart(lineIds: string[]): Promise<Cart> {
 export async function updateCart(
   lines: { id: string; merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
-  if (useMockShopify) {
-    const cart = createMockCart();
-    cart.totalQuantity = lines.reduce((sum, l) => sum + l.quantity, 0);
-    return cart;
-  }
+  if (useMockShopify) return updateMockCart(lines);
   const cartId = (await cookies()).get("cartId")?.value!;
   const res = await shopifyFetch<ShopifyUpdateCartOperation>({
     query: editCartItemsMutation,
@@ -290,7 +286,7 @@ export async function getCart(): Promise<Cart | undefined> {
 
   if (useMockShopify) {
     const cartId = (await cookies()).get("cartId")?.value;
-    return cartId ? createMockCart() : undefined;
+    return cartId ? getMockCart() ?? undefined : undefined;
   }
 
   const cartId = (await cookies()).get("cartId")?.value;

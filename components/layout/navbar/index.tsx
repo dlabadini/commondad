@@ -27,7 +27,7 @@ export async function Navbar() {
             className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
           >
             <LogoSquare />
-            <div className="ml-2 flex-none text-sm font-bold uppercase">
+            <div className="ml-2 flex-none text-sm font-bold uppercase text-black dark:text-white">
               commondad
             </div>
           </Link>
