@@ -93,7 +93,7 @@ html.dark {
       transparent 1.2px
     ),
     /* Subtle paper grain via crosshatch micro-lines */
-      repeating-linear-gradient(
+    repeating-linear-gradient(
         0deg,
         rgba(0, 0, 0, 0.04) 0 1px,
         transparent 1px 6px
@@ -137,7 +137,7 @@ html.dark {
       rgba(0, 0, 0, 0) 55%
     ),
     /* Subtle coffee-ring / handling stains */
-      radial-gradient(
+    radial-gradient(
         60% 55% at 18% 22%,
         rgba(130, 76, 33, 0.09),
         rgba(130, 76, 33, 0) 55%

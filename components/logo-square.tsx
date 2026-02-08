@@ -14,8 +14,8 @@ export default function LogoSquare({ size }: { size?: "sm" | undefined }) {
     >
       <LogoIcon
         className={clsx({
-          "h-[28px] w-[28px]": !size,
-          "h-[22px] w-[22px]": size === "sm",
+          "h-[28px] w-[28px] text-black dark:text-white": !size,
+          "h-[22px] w-[22px] text-black dark:text-white": size === "sm",
         })}
       />
     </div>

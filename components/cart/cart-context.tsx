@@ -6,11 +6,11 @@ import type {
   Product,
   ProductVariant,
 } from "lib/shopify/types";
+import { getOrCreateCart } from "./actions";
 import React, {
   createContext,
-  use,
   useContext,
-  useMemo,
+  useEffect,
   useOptimistic,
 } from "react";
 
@@ -24,10 +24,17 @@ type CartAction =
   | {
       type: "ADD_ITEM";
       payload: { variant: ProductVariant; product: Product };
+    }
+  | {
+      type: "SET_CART";
+      payload: { cart: Cart | undefined };
     };
 
 type CartContextType = {
-  cartPromise: Promise<Cart | undefined>;
+  cart: Cart | undefined;
+  setCart: (cart: Cart | undefined) => void;
+  updateCartItem: (merchandiseId: string, updateType: UpdateType) => void;
+  addCartItem: (variant: ProductVariant, product: Product) => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -134,6 +141,9 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
   const currentCart = state || createEmptyCart();
 
   switch (action.type) {
+    case "SET_CART": {
+      return action.payload.cart || createEmptyCart();
+    }
     case "UPDATE_ITEM": {
       const { merchandiseId, updateType } = action.payload;
       const updatedLines = currentCart.lines
@@ -192,29 +202,21 @@ function cartReducer(state: Cart | undefined, action: CartAction): Cart {
 
 export function CartProvider({
   children,
-  cartPromise,
+  initialCart,
 }: {
   children: React.ReactNode;
-  cartPromise: Promise<Cart | undefined>;
+  initialCart: Cart | undefined;
 }) {
-  return (
-    <CartContext.Provider value={{ cartPromise }}>
-      {children}
-    </CartContext.Provider>
-  );
-}
-
-export function useCart() {
-  const context = useContext(CartContext);
-  if (context === undefined) {
-    throw new Error("useCart must be used within a CartProvider");
-  }
-
-  const initialCart = use(context.cartPromise);
+  // Keep the provider renderable during prerender by fetching request-scoped cart
+  // data after hydration (cookies are request-specific and block SSG in Next 16).
   const [optimisticCart, updateOptimisticCart] = useOptimistic(
     initialCart,
     cartReducer,
   );
+
+  const setCart = (cart: Cart | undefined) => {
+    updateOptimisticCart({ type: "SET_CART", payload: { cart } });
+  };
 
   const updateCartItem = (merchandiseId: string, updateType: UpdateType) => {
     updateOptimisticCart({
@@ -227,12 +229,28 @@ export function useCart() {
     updateOptimisticCart({ type: "ADD_ITEM", payload: { variant, product } });
   };
 
-  return useMemo(
-    () => ({
-      cart: optimisticCart,
-      updateCartItem,
-      addCartItem,
-    }),
-    [optimisticCart],
+  useEffect(() => {
+    if (initialCart) return;
+    getOrCreateCart()
+      .then((cart) => setCart(cart))
+      .catch(() => {
+        // Leave cart empty; UI will behave as "no cart" and can retry later.
+      });
+  }, [initialCart]);
+
+  return (
+    <CartContext.Provider
+      value={{ cart: optimisticCart, setCart, updateCartItem, addCartItem }}
+    >
+      {children}
+    </CartContext.Provider>
   );
+}
+
+export function useCart() {
+  const context = useContext(CartContext);
+  if (context === undefined) {
+    throw new Error("useCart must be used within a CartProvider");
+  }
+  return context;
 }

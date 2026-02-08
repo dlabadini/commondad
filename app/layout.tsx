@@ -2,8 +2,7 @@ import { CartProvider } from "components/cart/cart-context";
 import { DevModeBanner } from "components/layout/dev-mode-banner";
 import { Navbar } from "components/layout/navbar";
 import { GeistSans } from "geist/font/sans";
-import { getCart } from "lib/shopify";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { baseUrl } from "lib/utils";
@@ -69,7 +68,10 @@ export const metadata = {
     canonical: baseUrl,
   },
   icons: {
-    icon: [{ url: "/favicon.ico" }],
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico" },
+    ],
   },
   openGraph: {
     type: "website",
@@ -96,13 +98,11 @@ export default async function RootLayout({
 }: {
   children: ReactNode;
 }) {
-  // Don't await the fetch, pass the Promise to the context provider
-  const cart = getCart();
-
   return (
     <html
       lang="en"
       className={`${GeistSans.variable} ${Handwritten.variable} ${DeclarationSerif.variable}`}
+      suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
@@ -115,11 +115,13 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-neutral-50 text-black selection:bg-teal-300 dark:bg-neutral-950 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white">
-        <CartProvider cartPromise={cart}>
+        <CartProvider initialCart={undefined}>
           <DevModeBanner />
-          <Navbar />
+          <Suspense>
+            <Navbar />
+          </Suspense>
           <main>
-            {children}
+            <Suspense>{children}</Suspense>
             <Toaster closeButton />
           </main>
         </CartProvider>

@@ -53,7 +53,9 @@ export async function Navbar() {
           </Suspense>
         </div>
         <div className="flex justify-end md:w-1/3">
-          <CartModal />
+          <Suspense fallback={<div className="h-10 w-10" />}>
+            <CartModal />
+          </Suspense>
         </div>
       </div>
     </nav>

@@ -37,7 +37,7 @@ try {
   });
 } catch {
   fail(
-    "Missing .venv-rembg. Create it and install rembg:\n  python3 -m venv .venv-rembg\n  .venv-rembg/bin/pip install -U pip\n  .venv-rembg/bin/pip install rembg onnxruntime\n\nThen rerun:\n  pnpm images:rembg",
+    "Missing .venv-rembg. Create it and install rembg:\n  python3 -m venv .venv-rembg\n  .venv-rembg/bin/pip install -U pip\n  .venv-rembg/bin/pip install rembg onnxruntime\n\nThen rerun:\n  bun run images:rembg",
   );
 }
 

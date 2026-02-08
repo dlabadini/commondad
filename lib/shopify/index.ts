@@ -1,10 +1,6 @@
 import { HIDDEN_PRODUCT_TAG, TAGS } from "lib/constants";
 import { isShopifyError } from "lib/type-guards";
-import {
-  unstable_cacheLife as cacheLife,
-  unstable_cacheTag as cacheTag,
-  revalidateTag,
-} from "next/cache";
+import { cacheLife, cacheTag, revalidateTag } from "next/cache";
 import { cookies, headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import {
@@ -466,6 +462,10 @@ export async function getMenu(handle: string): Promise<Menu[]> {
 }
 
 export async function getPage(handle: string): Promise<Page | undefined> {
+  "use cache";
+  cacheTag(TAGS.pages);
+  cacheLife("days");
+
   if (useMockShopify) {
     const page = mockPages.find((p) => p.handle === handle);
     return page;
@@ -480,6 +480,10 @@ export async function getPage(handle: string): Promise<Page | undefined> {
 }
 
 export async function getPages(): Promise<Page[]> {
+  "use cache";
+  cacheTag(TAGS.pages);
+  cacheLife("days");
+
   if (useMockShopify) return mockPages;
   const res = await shopifyFetch<ShopifyPagesOperation>({
     query: getPagesQuery,
