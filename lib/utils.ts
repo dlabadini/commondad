@@ -1,8 +1,19 @@
 import { ReadonlyURLSearchParams } from "next/navigation";
 
-export const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
-  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-  : "http://localhost:3000";
+function normalizeBaseUrl(input: string) {
+  const trimmed = input.trim().replace(/\/+$/, "");
+  // If someone sets SITE_URL without a scheme, assume https.
+  const withScheme = /^https?:\/\//i.test(trimmed)
+    ? trimmed
+    : `https://${trimmed}`;
+  return withScheme;
+}
+
+export const baseUrl = process.env.SITE_URL
+  ? normalizeBaseUrl(process.env.SITE_URL)
+  : process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000";
 
 export const createUrl = (
   pathname: string,
@@ -20,6 +31,17 @@ export const ensureStartsWith = (stringToCheck: string, startsWith: string) =>
     : `${startsWith}${stringToCheck}`;
 
 export const validateEnvironmentVariables = () => {
+  // Allow local FE development without Shopify keys.
+  const missingShopifyKeys =
+    !process.env.SHOPIFY_STORE_DOMAIN || !process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+
+  if (
+    process.env.USE_MOCK_SHOPIFY === "1" ||
+    (process.env.NODE_ENV !== "production" && missingShopifyKeys)
+  ) {
+    return;
+  }
+
   const requiredEnvironmentVariables = [
     "SHOPIFY_STORE_DOMAIN",
     "SHOPIFY_STOREFRONT_ACCESS_TOKEN",
@@ -34,7 +56,7 @@ export const validateEnvironmentVariables = () => {
 
   if (missingEnvironmentVariables.length) {
     throw new Error(
-      `The following environment variables are missing. Your site will not work without them. Read more: https://vercel.com/docs/integrations/shopify#configure-environment-variables\n\n${missingEnvironmentVariables.join(
+      `The following environment variables are missing. Your site will not work without them.\n\n${missingEnvironmentVariables.join(
         "\n",
       )}\n`,
     );

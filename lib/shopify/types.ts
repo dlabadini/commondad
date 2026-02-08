@@ -234,7 +234,7 @@ export type ShopifyMenuOperation = {
 };
 
 export type ShopifyPageOperation = {
-  data: { pageByHandle: Page };
+  data: { pageByHandle: Page | null };
   variables: { handle: string };
 };
 

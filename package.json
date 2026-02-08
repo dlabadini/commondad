@@ -6,7 +6,9 @@
     "start": "next start",
     "prettier": "prettier --write --ignore-unknown .",
     "prettier:check": "prettier --check --ignore-unknown .",
-    "test": "pnpm prettier:check"
+    "test": "pnpm prettier:check",
+    "images:transparent": "node scripts/convert-to-transparent-png.mjs",
+    "images:rembg": "node scripts/remove-bg-rembg.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

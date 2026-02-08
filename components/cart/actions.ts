@@ -96,8 +96,11 @@ export async function updateItemQuantity(
 }
 
 export async function redirectToCheckout() {
+  if (process.env.USE_MOCK_SHOPIFY === "1") {
+    redirect("/checkout");
+  }
   let cart = await getCart();
-  redirect(cart!.checkoutUrl);
+  redirect(cart?.checkoutUrl || "/checkout");
 }
 
 export async function createCartAndSetCookie() {

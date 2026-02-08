@@ -19,6 +19,8 @@
 # misc
 .DS_Store
 *.pem
+.tmp/
+.venv-rembg/
 
 # debug
 npm-debug.log*

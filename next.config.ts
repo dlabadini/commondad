@@ -12,6 +12,12 @@ export default {
         hostname: "cdn.shopify.com",
         pathname: "/s/files/**",
       },
+      // Allow mocked product images to load from the live CommonDad Shopify CDN.
+      {
+        protocol: "https",
+        hostname: "common.dad",
+        pathname: "/cdn/shop/files/**",
+      },
     ],
   },
 };
