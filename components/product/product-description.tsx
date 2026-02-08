@@ -3,12 +3,17 @@ import Price from "components/price";
 import Prose from "components/prose";
 import { Product } from "lib/shopify/types";
 import { VariantSelector } from "./variant-selector";
+import { SocialShare } from "./social-share";
+import { WishlistButton } from "components/wishlist/wishlist-button";
 
 export function ProductDescription({ product }: { product: Product }) {
   return (
     <>
       <div className="mb-6 flex flex-col border-b pb-6 dark:border-neutral-700">
-        <h1 className="mb-2 text-5xl font-medium">{product.title}</h1>
+        <div className="flex items-start justify-between">
+          <h1 className="mb-2 text-5xl font-medium">{product.title}</h1>
+          <WishlistButton product={product} />
+        </div>
         <div className="mr-auto w-auto rounded-full bg-terracotta-600 p-2 text-sm text-white">
           <Price
             amount={product.priceRange.maxVariantPrice.amount}
@@ -24,6 +29,7 @@ export function ProductDescription({ product }: { product: Product }) {
         />
       ) : null}
       <AddToCart product={product} />
+      <SocialShare product={product} />
     </>
   );
 }

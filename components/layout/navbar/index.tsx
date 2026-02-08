@@ -1,5 +1,6 @@
 import CartModal from "components/cart/modal";
 import LogoSquare from "components/logo-square";
+import { WishlistLink } from "components/wishlist/wishlist-link";
 import { getMenu } from "lib/shopify";
 import { Menu } from "lib/shopify/types";
 import Link from "next/link";
@@ -52,7 +53,10 @@ export async function Navbar() {
             <Search />
           </Suspense>
         </div>
-        <div className="flex justify-end md:w-1/3">
+        <div className="flex justify-end gap-2 md:w-1/3">
+          <Suspense fallback={<div className="h-10 w-10" />}>
+            <WishlistLink />
+          </Suspense>
           <Suspense fallback={<div className="h-10 w-10" />}>
             <CartModal />
           </Suspense>
