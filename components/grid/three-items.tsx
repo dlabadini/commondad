@@ -2,6 +2,7 @@ import { GridTileImage } from "components/grid/tile";
 import { getCollectionProducts } from "lib/shopify";
 import type { Product } from "lib/shopify/types";
 import Link from "next/link";
+import { ProductCardActions } from "components/product-card-actions";
 
 function ThreeItemGridItem({
   item,
@@ -41,6 +42,7 @@ function ThreeItemGridItem({
             amount: item.priceRange.maxVariantPrice.amount,
             currencyCode: item.priceRange.maxVariantPrice.currencyCode,
           }}
+          actions={<ProductCardActions product={item} />}
         />
       </Link>
     </div>

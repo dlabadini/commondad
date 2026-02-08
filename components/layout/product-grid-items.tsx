@@ -2,8 +2,7 @@ import Grid from "components/grid";
 import { GridTileImage } from "components/grid/tile";
 import { Product } from "lib/shopify/types";
 import Link from "next/link";
-import { QuickAddButton } from "components/cart/quick-add-button";
-import { WishlistButton } from "components/wishlist/wishlist-button";
+import { ProductCardActions } from "components/product-card-actions";
 
 export default function ProductGridItems({
   products,
@@ -15,7 +14,7 @@ export default function ProductGridItems({
       {products.map((product) => (
         <Grid.Item key={product.handle} className="animate-fadeIn">
           <Link
-            className="group relative inline-block h-full w-full"
+            className="relative inline-block h-full w-full"
             href={`/product/${product.handle}`}
             prefetch={true}
           >
@@ -29,11 +28,8 @@ export default function ProductGridItems({
               src={product.featuredImage?.url}
               fill
               sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
+              actions={<ProductCardActions product={product} />}
             />
-            <div className="absolute right-2 top-2 z-20 flex items-center gap-0.5 rounded-md bg-black/60 p-1">
-              <WishlistButton product={product} variant="overlay" />
-              <QuickAddButton product={product} />
-            </div>
           </Link>
         </Grid.Item>
       ))}

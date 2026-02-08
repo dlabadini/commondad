@@ -1,6 +1,7 @@
 import { GridTileImage } from "components/grid/tile";
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
+import { ProductCardActions } from "components/product-card-actions";
 import { ProductDescription } from "components/product/product-description";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
 import { getProduct, getProductRecommendations } from "lib/shopify";
@@ -139,6 +140,7 @@ async function RelatedProducts({ id }: { id: string }) {
                 src={product.featuredImage?.url}
                 fill
                 sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
+                actions={<ProductCardActions product={product} />}
               />
             </Link>
           </li>
