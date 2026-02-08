@@ -33,7 +33,8 @@ export const ensureStartsWith = (stringToCheck: string, startsWith: string) =>
 export const validateEnvironmentVariables = () => {
   // Allow local FE development without Shopify keys.
   const missingShopifyKeys =
-    !process.env.SHOPIFY_STORE_DOMAIN || !process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
+    !process.env.SHOPIFY_STORE_DOMAIN ||
+    !process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 
   if (
     process.env.USE_MOCK_SHOPIFY === "1" ||

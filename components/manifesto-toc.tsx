@@ -12,9 +12,12 @@ export type ManifestoSection = {
 export default function ManifestoToc({
   title = "Manifesto",
   sections,
+  scrollContainerId,
 }: {
   title?: string;
   sections: ManifestoSection[];
+  // If provided, the TOC will scroll this element instead of the window.
+  scrollContainerId?: string;
 }) {
   const [activeId, setActiveId] = useState(sections[0]?.id || "");
   const [openSelect, setOpenSelect] = useState(false);
@@ -39,6 +42,10 @@ export default function ManifestoToc({
     const hash = window.location.hash.replace("#", "");
     if (hash && sections.some((s) => s.id === hash)) setActiveId(hash);
 
+    const scrollRoot = scrollContainerId
+      ? (document.getElementById(scrollContainerId) as HTMLElement | null)
+      : null;
+
     // Scroll spy using IntersectionObserver.
     const elements = sections
       .map((s) => document.getElementById(s.id))
@@ -59,7 +66,7 @@ export default function ManifestoToc({
         if (top?.id) setActiveId(top.id);
       },
       {
-        root: null,
+        root: scrollRoot,
         rootMargin: "0px 0px -70% 0px",
         threshold: 0.01,
       },
@@ -67,7 +74,36 @@ export default function ManifestoToc({
 
     for (const el of elements) observer.observe(el);
     return () => observer.disconnect();
-  }, [sections]);
+  }, [sections, scrollContainerId]);
+
+  const jumpTo = (id: string) => {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    // Keep URL in sync without causing page jumps (especially for nested scrollers).
+    try {
+      history.replaceState(null, "", `#${id}`);
+    } catch {
+      // ignore
+    }
+
+    if (!scrollContainerId) {
+      // Default browser jump.
+      target.scrollIntoView({ behavior: "auto", block: "start" });
+      return;
+    }
+
+    const container = document.getElementById(scrollContainerId);
+    if (!container) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    const deltaTop = targetRect.top - containerRect.top;
+    container.scrollTo({
+      top: container.scrollTop + deltaTop,
+      behavior: "auto",
+    });
+  };
 
   const linkClasses = (id: string) =>
     clsx(
@@ -91,7 +127,11 @@ export default function ManifestoToc({
             <a
               href={`#${s.id}`}
               className={linkClasses(s.id)}
-              onClick={() => setActiveId(s.id)}
+              onClick={(e) => {
+                e.preventDefault();
+                setActiveId(s.id);
+                jumpTo(s.id);
+              }}
             >
               {s.title}
             </a>
@@ -119,9 +159,11 @@ export default function ManifestoToc({
                   "text-black dark:text-white": s.id === activeId,
                   "text-neutral-600 dark:text-neutral-300": s.id !== activeId,
                 })}
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
                   setActiveId(s.id);
                   setOpenSelect(false);
+                  jumpTo(s.id);
                 }}
               >
                 {s.title}
@@ -133,4 +175,3 @@ export default function ManifestoToc({
     </nav>
   );
 }
-

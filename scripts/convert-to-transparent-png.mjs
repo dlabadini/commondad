@@ -41,7 +41,8 @@ if (!have("magick") && !have("convert")) {
 }
 
 const items = JSON.parse(readFileSync(INPUT_JSON, "utf8"));
-if (!Array.isArray(items) || items.length === 0) usage("No items in input JSON.");
+if (!Array.isArray(items) || items.length === 0)
+  usage("No items in input JSON.");
 
 mkdirSync(OUT_DIR, { recursive: true });
 
@@ -98,4 +99,3 @@ for (const item of items) {
 
   console.log(`wrote ${outputPng}`);
 }
-

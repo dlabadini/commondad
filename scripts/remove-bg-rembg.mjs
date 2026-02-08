@@ -32,11 +32,9 @@ function must(args) {
 }
 
 try {
-  execFileSync(
-    python,
-    ["-c", "import rembg, onnxruntime; print('ok')"],
-    { stdio: "ignore" },
-  );
+  execFileSync(python, ["-c", "import rembg, onnxruntime; print('ok')"], {
+    stdio: "ignore",
+  });
 } catch {
   fail(
     "Missing .venv-rembg. Create it and install rembg:\n  python3 -m venv .venv-rembg\n  .venv-rembg/bin/pip install -U pip\n  .venv-rembg/bin/pip install rembg onnxruntime\n\nThen rerun:\n  pnpm images:rembg",
@@ -44,7 +42,8 @@ try {
 }
 
 const items = JSON.parse(readFileSync(INPUT_JSON, "utf8"));
-if (!Array.isArray(items) || items.length === 0) fail("No items in input JSON.");
+if (!Array.isArray(items) || items.length === 0)
+  fail("No items in input JSON.");
 
 mkdirSync(OUT_DIR, { recursive: true });
 const tmpDir = join(".tmp", "image-rembg");

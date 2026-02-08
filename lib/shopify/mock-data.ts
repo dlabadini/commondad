@@ -298,99 +298,90 @@ export const mockPages: Page[] = [
     title: "Mission",
     handle: "mission",
     body: `
-<section id="mission" data-manifesto-section style="padding: 28px; border: 1px solid rgba(120,120,120,.25); border-radius: 18px;">
-  <p style="margin:0; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; opacity:.8;">WE'RE ON A MISSION</p>
-  <h2 style="margin-top: 10px; margin-bottom: 8px;">Make good dads common.</h2>
-  <p style="margin:0; max-width: 62ch; opacity:.92;">Fatherhood is leadership. It should look like strength, discipline, presence, and love, every day.</p>
+<section id="mission" data-manifesto-section>
+  <h2 style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Preamble</h2>
+  <p style="margin:0; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; opacity:.78;">In the course of fatherhood</p>
+  <p class="font-handwritten" style="margin: 10px 0 0 0; font-size: 34px; line-height: 1.05;">A Declaration</p>
+  <p style="margin-top: 10px;"><strong>Make good dads common.</strong></p>
+  <p style="max-width: 74ch;">
+    When, in the course of life, it becomes necessary for a man to stand as the calm in the room, the shelter in the storm, and the steady hand in the dark,
+    it is fitting that he speak plainly of what he will be, and what he will do.
+  </p>
 </section>
 
 <hr />
 
 <section id="narrative" data-manifesto-section>
-  <h2>The Opportunity</h2>
-  <p style="max-width: 68ch;">Make the default higher. Make the example clearer. Make the standard visible.</p>
-  <ul>
-    <li>Presence over performance.</li>
-    <li>Responsibility over excuses.</li>
-    <li>Growth over comfort.</li>
-  </ul>
+  <h2 style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Declaration</h2>
+  <p style="max-width: 74ch;">
+    We therefore set forth this declaration: that fatherhood be carried with honor; that presence be practiced, not performed; that love be made visible by action;
+    and that the ordinary day be made extraordinary by the father who chooses to show up.
+  </p>
 </section>
 
 <section id="beliefs" data-manifesto-section>
-  <h2>First Principles</h2>
-  <p style="max-width: 68ch;">No hacks. No shortcuts. Just fundamentals, practiced until they become identity.</p>
-  <ul>
-    <li><strong>Discipline</strong>: do the work.</li>
-    <li><strong>Strength</strong>: protect and provide.</li>
-    <li><strong>Presence</strong>: be here, for real.</li>
-    <li><strong>Humility</strong>: learn, own it, improve.</li>
-  </ul>
+  <h2 style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Principles</h2>
+  <p style="max-width: 74ch;">
+    We hold these truths to be self-evident: that discipline keeps promises; that strength protects what matters; that presence makes a child feel seen;
+    and that humility turns a mistake into growth. Not perfection, but principle. Not performance, but character.
+  </p>
 </section>
 
 <hr />
 
 <section id="standard" data-manifesto-section>
-  <h2>Setting The Standard</h2>
-  <p style="max-width: 68ch;"><strong>We show up.</strong> We carry weight. We lead at home. We get better every year.</p>
-  <blockquote><p style="margin:0;"><strong>This isn’t dad culture. This is leadership.</strong></p></blockquote>
+  <h2 style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Resolves</h2>
+  <p style="max-width: 74ch;">
+    We are not chasing applause. We are building men who build families. <strong>We show up.</strong> We carry weight. We lead with love.
+  </p>
+  <blockquote class="font-handwritten">
+    <p style="margin:0;"><strong>This isn’t dad culture. This is leadership.</strong></p>
+  </blockquote>
 </section>
 
 <hr />
 
 <section id="who-we-are" data-manifesto-section>
-  <h2>Who We Are</h2>
-  <p style="max-width: 68ch;"><strong>CommonDad is a standard.</strong> A community for men who lead with intention, train with discipline, and love with action.</p>
-  <blockquote><p style="margin:0;"><strong>Gear is the symbol. Character is the point.</strong></p></blockquote>
-  <p style="max-width: 68ch;"><strong>Join the movement.</strong> Make it common.</p>
+  <h2 style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Compact</h2>
+  <p style="max-width: 74ch;">
+    CommonDad is a place for fathers who refuse to drift: a community that reminds you that you are not alone, and that the work you do matters.
+    Gear is the symbol. Character is the point. Join the movement, and let us make good dads common.
+  </p>
+  <p style="max-width: 74ch; margin-top: 18px;"><em>With respect,</em></p>
+  <p class="font-handwritten" style="margin-top: 0; font-size: 28px;">CommonDad</p>
 </section>
 
 <hr />
 
 <section id="founders" data-manifesto-section>
-<h2>Founders</h2>
-<p style="margin-top:0; opacity:.85;"><em>Add names, headshots, and signatures when ready.</em></p>
-
-<div style="display:grid; grid-template-columns: 1fr; gap: 18px;">
-  <div style="border: 1px solid rgba(120,120,120,.25); border-radius: 16px; padding: 18px;">
-    <div style="display:flex; gap: 14px; align-items:flex-start;">
-      <div style="width:56px; height:56px; border-radius: 999px; background:#111827; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700;">
-        CD
-      </div>
-      <div>
-        <p style="margin:0;"><strong>Founder Name (TBD)</strong></p>
-        <p style="margin:0; opacity:.8;"><em>Co-Founder</em></p>
-      </div>
+  <h2 style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Signatories</h2>
+  <p style="max-width: 74ch;">
+    In witness whereof, we set our names to this cause, and commit ourselves to the daily work of fatherhood.
+  </p>
+  <div style="display:grid; grid-template-columns: 1fr; gap: 18px; margin-top: 18px;">
+    <div style="border: 1px solid rgba(120,120,120,.25); border-radius: 16px; padding: 18px;">
+      <p style="margin:0;"><strong>Founder Name (TBD)</strong></p>
+      <p style="margin:0; opacity:.8;"><em>Co-Founder</em></p>
+      <p style="margin-top: 12px; margin-bottom:0; display:flex; gap: 10px; align-items: baseline; flex-wrap: wrap;">
+        <em>Signed,</em>
+        <span class="font-handwritten" style="font-size: 26px; letter-spacing: .01em;">____________________</span>
+      </p>
     </div>
-    <blockquote>
-      <p style="margin:0;">"Make it common."</p>
-    </blockquote>
-    <p style="margin-bottom:0;"><em>Signed,</em><br /><span style="font-size: 20px; letter-spacing: .02em;">____________________</span></p>
-  </div>
-
-  <div style="border: 1px solid rgba(120,120,120,.25); border-radius: 16px; padding: 18px;">
-    <div style="display:flex; gap: 14px; align-items:flex-start;">
-      <div style="width:56px; height:56px; border-radius: 999px; background:#111827; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700;">
-        CD
-      </div>
-      <div>
-        <p style="margin:0;"><strong>Founder Name (TBD)</strong></p>
-        <p style="margin:0; opacity:.8;"><em>Co-Founder</em></p>
-      </div>
+    <div style="border: 1px solid rgba(120,120,120,.25); border-radius: 16px; padding: 18px;">
+      <p style="margin:0;"><strong>Founder Name (TBD)</strong></p>
+      <p style="margin:0; opacity:.8;"><em>Co-Founder</em></p>
+      <p style="margin-top: 12px; margin-bottom:0; display:flex; gap: 10px; align-items: baseline; flex-wrap: wrap;">
+        <em>Signed,</em>
+        <span class="font-handwritten" style="font-size: 26px; letter-spacing: .01em;">____________________</span>
+      </p>
     </div>
-    <blockquote>
-      <p style="margin:0;">"This is leadership."</p>
-    </blockquote>
-    <p style="margin-bottom:0;"><em>Signed,</em><br /><span style="font-size: 20px; letter-spacing: .02em;">____________________</span></p>
   </div>
-</div>
 </section>
 `.trim(),
-    bodySummary:
-      "We’re on a mission to make good dads common. This is leadership.",
+    bodySummary: "A declaration: make good dads common.",
     seo: {
       title: "Mission",
-      description:
-        "We’re on a mission to make good dads common. This is leadership.",
+      description: "A declaration: make good dads common.",
     },
     createdAt: now(),
     updatedAt: now(),

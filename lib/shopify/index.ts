@@ -1,10 +1,5 @@
-import {
-  HIDDEN_PRODUCT_TAG,
-  SHOPIFY_GRAPHQL_API_ENDPOINT,
-  TAGS,
-} from "lib/constants";
+import { HIDDEN_PRODUCT_TAG, TAGS } from "lib/constants";
 import { isShopifyError } from "lib/type-guards";
-import { ensureStartsWith } from "lib/utils";
 import {
   unstable_cacheLife as cacheLife,
   unstable_cacheTag as cacheTag,
@@ -64,17 +59,10 @@ import {
   mockPages,
   mockProducts,
 } from "./mock-data";
+import { getShopifyRuntimeConfig } from "./runtime";
 
-const domain = process.env.SHOPIFY_STORE_DOMAIN
-  ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, "https://")
-  : "";
-const endpoint = domain ? `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}` : "";
-const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN || "";
-// Local dev convenience: if Shopify isn't configured, default to mocked data
-// so the FE can run without keys. In prod, missing keys should still fail.
-const useMockShopify =
-  process.env.USE_MOCK_SHOPIFY === "1" ||
-  (process.env.NODE_ENV !== "production" && (!endpoint || !key));
+const { domain, endpoint, storefrontAccessToken, useMockShopify } =
+  getShopifyRuntimeConfig();
 
 type ExtractVariables<T> = T extends { variables: object }
   ? T["variables"]
@@ -96,7 +84,7 @@ export async function shopifyFetch<T>({
     if (!endpoint) {
       throw new Error("SHOPIFY_STORE_DOMAIN environment variable is not set");
     }
-    if (!key) {
+    if (!storefrontAccessToken) {
       throw new Error(
         "SHOPIFY_STOREFRONT_ACCESS_TOKEN environment variable is not set",
       );
@@ -106,7 +94,7 @@ export async function shopifyFetch<T>({
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-Shopify-Storefront-Access-Token": key,
+        "X-Shopify-Storefront-Access-Token": storefrontAccessToken,
         ...headers,
       },
       body: JSON.stringify({
@@ -161,7 +149,7 @@ const reshapeCart = (cart: ShopifyCart): Cart => {
 };
 
 const reshapeCollection = (
-  collection: ShopifyCollection
+  collection: ShopifyCollection,
 ): Collection | undefined => {
   if (!collection) {
     return undefined;
@@ -203,7 +191,7 @@ const reshapeImages = (images: Connection<Image>, productTitle: string) => {
 
 const reshapeProduct = (
   product: ShopifyProduct,
-  filterHiddenProducts: boolean = true
+  filterHiddenProducts: boolean = true,
 ) => {
   if (
     !product ||
@@ -247,7 +235,7 @@ export async function createCart(): Promise<Cart> {
 }
 
 export async function addToCart(
-  lines: { merchandiseId: string; quantity: number }[]
+  lines: { merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
   if (useMockShopify) {
     const cart = createMockCart();
@@ -280,7 +268,7 @@ export async function removeFromCart(lineIds: string[]): Promise<Cart> {
 }
 
 export async function updateCart(
-  lines: { id: string; merchandiseId: string; quantity: number }[]
+  lines: { id: string; merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
   if (useMockShopify) {
     const cart = createMockCart();
@@ -329,7 +317,7 @@ export async function getCart(): Promise<Cart | undefined> {
 }
 
 export async function getCollection(
-  handle: string
+  handle: string,
 ): Promise<Collection | undefined> {
   "use cache";
   cacheTag(TAGS.collections);
@@ -371,7 +359,7 @@ export async function getCollectionProducts({
 
   if (!endpoint) {
     console.log(
-      `Skipping getCollectionProducts for '${collection}' - Shopify not configured`
+      `Skipping getCollectionProducts for '${collection}' - Shopify not configured`,
     );
     return [];
   }
@@ -391,7 +379,7 @@ export async function getCollectionProducts({
   }
 
   return reshapeProducts(
-    removeEdgesAndNodes(res.body.data.collection.products)
+    removeEdgesAndNodes(res.body.data.collection.products),
   );
 }
 
@@ -438,7 +426,7 @@ export async function getCollections(): Promise<Collection[]> {
     // Filter out the `hidden` collections.
     // Collections that start with `hidden-*` need to be hidden on the search page.
     ...reshapeCollections(shopifyCollections).filter(
-      (collection) => !collection.handle.startsWith("hidden")
+      (collection) => !collection.handle.startsWith("hidden"),
     ),
   ];
 
@@ -525,7 +513,7 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
 }
 
 export async function getProductRecommendations(
-  productId: string
+  productId: string,
 ): Promise<Product[]> {
   "use cache";
   cacheTag(TAGS.products);

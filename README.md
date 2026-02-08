@@ -19,4 +19,3 @@ The mock hat images can be generated as transparent PNGs:
 1. Generate images: `pnpm images:rembg`
 
 Outputs to `public/mock/products/hats/`.
-

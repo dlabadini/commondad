@@ -13,6 +13,9 @@ importers:
       "@heroicons/react":
         specifier: ^2.2.0
         version: 2.2.0(react@19.0.0)
+      "@paper-design/shaders-react":
+        specifier: ^0.0.71
+        version: 0.0.71(@types/react@19.0.12)(react@19.0.0)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -423,6 +426,24 @@ packages:
     engines: { node: ">= 10" }
     cpu: [x64]
     os: [win32]
+
+  "@paper-design/shaders-react@0.0.71":
+    resolution:
+      {
+        integrity: sha512-kTqjIlyZcpkwqJie+3ldEDscTtx1oOi8eRBD5QgWKI21GaNn/SSg26092M5zzqr3e8dVANv0ktS2ICSjbMFKbw==,
+      }
+    peerDependencies:
+      "@types/react": ^18 || ^19
+      react: ^18 || ^19
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+
+  "@paper-design/shaders@0.0.71":
+    resolution:
+      {
+        integrity: sha512-brCt05YxxyjBrhnE3l1wJJHcFXsM8aE4lmpd9TMQp+p0dMU3F+OWkJZL9m/RC1Tt7om5xr0Wg7d0HYm+b9NYZA==,
+      }
 
   "@react-aria/focus@3.20.1":
     resolution:
@@ -1253,6 +1274,15 @@ snapshots:
 
   "@next/swc-win32-x64-msvc@15.6.0-canary.58":
     optional: true
+
+  "@paper-design/shaders-react@0.0.71(@types/react@19.0.12)(react@19.0.0)":
+    dependencies:
+      "@paper-design/shaders": 0.0.71
+      react: 19.0.0
+    optionalDependencies:
+      "@types/react": 19.0.12
+
+  "@paper-design/shaders@0.0.71": {}
 
   "@react-aria/focus@3.20.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)":
     dependencies:

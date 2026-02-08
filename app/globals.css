@@ -8,16 +8,16 @@
 
 /* Custom Terracotta theme colors - brown toned */
 @theme {
-  --color-terracotta-50: #faf6f3;
-  --color-terracotta-100: #f2ebe6;
-  --color-terracotta-200: #e6d5ca;
-  --color-terracotta-300: #d4b8a6;
-  --color-terracotta-400: #c0947a;
-  --color-terracotta-500: #a8765b;
-  --color-terracotta-600: #8b5e45;
-  --color-terracotta-700: #6e4a37;
-  --color-terracotta-800: #5a3d2f;
-  --color-terracotta-900: #4a3328;
+  --color-terracotta-50: #fdf8f5;
+  --color-terracotta-100: #f9ede6;
+  --color-terracotta-200: #f2d8c9;
+  --color-terracotta-300: #e8bfa3;
+  --color-terracotta-400: #d49b73;
+  --color-terracotta-500: #b96d40;
+  --color-terracotta-600: #a55e36;
+  --color-terracotta-700: #894b2e;
+  --color-terracotta-800: #6f3e29;
+  --color-terracotta-900: #5a3324;
 }
 
 @layer base {
@@ -36,6 +36,161 @@ html {
 
 html.dark {
   color-scheme: dark;
+}
+
+.font-handwritten {
+  font-family: var(--font-handwritten), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-declaration {
+  font-family:
+    var(--font-declaration), ui-serif, Georgia, "Times New Roman", serif;
+  font-variant-ligatures: common-ligatures;
+}
+
+/* "Paper" surface with subtle CMYK halftone + grain.
+   Designed for the manifesto/letter card. */
+.paper-halftone {
+  position: relative;
+  overflow: hidden;
+  /* Warm paper base with slight unevenness. */
+  background:
+    radial-gradient(
+      120% 90% at 20% 10%,
+      rgba(255, 243, 221, 0.9),
+      rgba(255, 243, 221, 0) 55%
+    ),
+    radial-gradient(
+      120% 90% at 80% 30%,
+      rgba(255, 235, 210, 0.75),
+      rgba(255, 235, 210, 0) 60%
+    ),
+    linear-gradient(180deg, #fcf6ea 0%, #f8f0e2 100%);
+}
+
+.paper-halftone::before {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  opacity: 0.45;
+  /* Keep CSS texture subtle; halftone dots come from @paper-design/shaders-react. */
+  background-image:
+    /* Warm speckle (paper fibers) */
+    radial-gradient(
+      circle at 10% 80%,
+      rgba(120, 72, 28, 0.08) 0 1px,
+      transparent 1.2px
+    ),
+    radial-gradient(
+      circle at 70% 20%,
+      rgba(120, 72, 28, 0.06) 0 1px,
+      transparent 1.2px
+    ),
+    radial-gradient(
+      circle at 40% 55%,
+      rgba(120, 72, 28, 0.05) 0 1px,
+      transparent 1.2px
+    ),
+    /* Subtle paper grain via crosshatch micro-lines */
+      repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.04) 0 1px,
+        transparent 1px 6px
+      ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.03) 0 1px,
+      transparent 1px 7px
+    );
+  background-size:
+    43px 43px,
+    47px 47px,
+    41px 41px,
+    6px 6px,
+    7px 7px;
+  background-position:
+    0 0,
+    17px 9px,
+    11px 21px,
+    0 0,
+    0 0;
+  mix-blend-mode: multiply;
+  filter: blur(0.15px);
+}
+
+.paper-halftone::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* Vignette and slight top highlight to feel like a sheet. */
+  background:
+    radial-gradient(
+      120% 90% at 50% 0%,
+      rgba(255, 255, 255, 0.6),
+      rgba(255, 255, 255, 0) 55%
+    ),
+    radial-gradient(
+      90% 80% at 50% 60%,
+      rgba(0, 0, 0, 0.1),
+      rgba(0, 0, 0, 0) 55%
+    ),
+    /* Subtle coffee-ring / handling stains */
+      radial-gradient(
+        60% 55% at 18% 22%,
+        rgba(130, 76, 33, 0.09),
+        rgba(130, 76, 33, 0) 55%
+      ),
+    radial-gradient(
+      55% 50% at 86% 78%,
+      rgba(130, 76, 33, 0.06),
+      rgba(130, 76, 33, 0) 55%
+    );
+  opacity: 0.6;
+}
+
+.paper-halftone > *:not(.paper-shader) {
+  position: relative;
+  z-index: 1;
+}
+
+.paper-shader {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.paper-tilt {
+  transform: rotate(-0.18deg);
+  transform-origin: 50% 20%;
+}
+
+html.dark .paper-halftone {
+  background:
+    radial-gradient(
+      120% 90% at 25% 15%,
+      rgba(255, 227, 186, 0.1),
+      rgba(255, 227, 186, 0) 55%
+    ),
+    radial-gradient(
+      120% 90% at 75% 45%,
+      rgba(255, 196, 134, 0.06),
+      rgba(255, 196, 134, 0) 60%
+    ),
+    linear-gradient(180deg, #0f1115 0%, #0b0d11 100%);
+}
+
+html.dark .paper-halftone::before {
+  opacity: 0.22;
+  mix-blend-mode: screen;
+}
+
+html.dark .paper-halftone::after {
+  opacity: 0.35;
 }
 
 @supports (font: -apple-system-body) and (-webkit-appearance: none) {

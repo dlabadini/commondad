@@ -1,4 +1,5 @@
 import { CartProvider } from "components/cart/cart-context";
+import { DevModeBanner } from "components/layout/dev-mode-banner";
 import { Navbar } from "components/layout/navbar";
 import { GeistSans } from "geist/font/sans";
 import { getCart } from "lib/shopify";
@@ -6,6 +7,7 @@ import { ReactNode } from "react";
 import { Toaster } from "sonner";
 import "./globals.css";
 import { baseUrl } from "lib/utils";
+import { DeclarationSerif, Handwritten } from "lib/fonts";
 
 const {
   SITE_NAME,
@@ -22,8 +24,9 @@ const resolvedDescription =
   SITE_DESCRIPTION ||
   SITE_SUBTAGLINE ||
   "CommonDad is on a mission to make good dads common.";
-const resolvedOgTitle =
-  SITE_TAGLINE ? `${resolvedSiteName} | ${SITE_TAGLINE}` : resolvedSiteName;
+const resolvedOgTitle = SITE_TAGLINE
+  ? `${resolvedSiteName} | ${SITE_TAGLINE}`
+  : resolvedSiteName;
 const resolvedSameAs = [
   SOCIAL_INSTAGRAM_URL,
   SOCIAL_TIKTOK_URL,
@@ -97,7 +100,10 @@ export default async function RootLayout({
   const cart = getCart();
 
   return (
-    <html lang="en" className={GeistSans.variable}>
+    <html
+      lang="en"
+      className={`${GeistSans.variable} ${Handwritten.variable} ${DeclarationSerif.variable}`}
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script
@@ -110,6 +116,7 @@ export default async function RootLayout({
       </head>
       <body className="bg-neutral-50 text-black selection:bg-teal-300 dark:bg-neutral-950 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white">
         <CartProvider cartPromise={cart}>
+          <DevModeBanner />
           <Navbar />
           <main>
             {children}
