@@ -1,5 +1,6 @@
 import { Carousel } from "components/carousel";
 import { ThreeItemGrid } from "components/grid/three-items";
+import { HeroVideo } from "components/hero-video";
 import Footer from "components/layout/footer";
 
 export const metadata = {
@@ -12,6 +13,7 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
+      <HeroVideo src="/mock/products/sample-video.mp4" />
       <ThreeItemGrid />
       <Carousel />
       <Footer />
