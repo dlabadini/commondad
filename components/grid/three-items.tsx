@@ -3,6 +3,7 @@ import { getCollectionProducts } from "lib/shopify";
 import type { Product } from "lib/shopify/types";
 import Link from "next/link";
 import { ProductCardActions } from "components/product-card-actions";
+import { productHasVideo } from "lib/shopify/media";
 
 function ThreeItemGridItem({
   item,
@@ -42,6 +43,7 @@ function ThreeItemGridItem({
             amount: item.priceRange.maxVariantPrice.amount,
             currencyCode: item.priceRange.maxVariantPrice.currencyCode,
           }}
+          hasVideo={productHasVideo(item)}
           actions={<ProductCardActions product={item} />}
         />
       </Link>

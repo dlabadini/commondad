@@ -26,10 +26,14 @@ import {
   Cart,
   Collection,
   Connection,
+  ExternalVideo,
   Image,
+  MediaImage,
+  MediaItem,
   Menu,
   Page,
   Product,
+  Video,
   ShopifyAddToCartOperation,
   ShopifyCart,
   ShopifyCartOperation,
@@ -189,6 +193,12 @@ const reshapeImages = (images: Connection<Image>, productTitle: string) => {
   });
 };
 
+const reshapeMedia = (
+  media: Connection<MediaImage | Video | ExternalVideo>,
+): MediaItem[] => {
+  return removeEdgesAndNodes(media);
+};
+
 const reshapeProduct = (
   product: ShopifyProduct,
   filterHiddenProducts: boolean = true,
@@ -200,11 +210,12 @@ const reshapeProduct = (
     return undefined;
   }
 
-  const { images, variants, ...rest } = product;
+  const { images, media, variants, ...rest } = product;
 
   return {
     ...rest,
     images: reshapeImages(images, product.title),
+    media: media ? reshapeMedia(media) : [],
     variants: removeEdgesAndNodes(variants),
   };
 };

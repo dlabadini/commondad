@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { PlayIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Label from "../label";
 import { ReactNode } from "react";
@@ -8,6 +9,7 @@ export function GridTileImage({
   active,
   label,
   actions,
+  hasVideo,
   ...props
 }: {
   isInteractive?: boolean;
@@ -19,6 +21,7 @@ export function GridTileImage({
     position?: "bottom" | "center";
   };
   actions?: ReactNode;
+  hasVideo?: boolean;
 } & React.ComponentProps<typeof Image>) {
   return (
     <div
@@ -39,6 +42,12 @@ export function GridTileImage({
           })}
           {...props}
         />
+      ) : null}
+      {hasVideo ? (
+        <div className="absolute left-3 top-3 z-20 flex items-center gap-1.5 rounded-md bg-black/70 px-2.5 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
+          <PlayIcon className="h-3.5 w-3.5" />
+          Video
+        </div>
       ) : null}
       {label ? (
         <Label

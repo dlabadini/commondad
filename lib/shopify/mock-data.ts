@@ -1,13 +1,38 @@
-import type { Cart, Collection, Menu, Page, Product } from "./types";
+import type { Cart, Collection, Image, MediaItem, Menu, Page, Product, Video } from "./types";
 
 const now = () => new Date().toISOString();
 
-function img(url: string, altText: string) {
+function img(url: string, altText: string): Image {
   return {
     url,
     altText,
     width: 1400,
     height: 1400,
+  };
+}
+
+function imageToMedia(image: Image): MediaItem {
+  return {
+    mediaContentType: "IMAGE",
+    alt: image.altText,
+    image,
+  };
+}
+
+function mockVideo(url: string, poster: Image): Video {
+  return {
+    mediaContentType: "VIDEO",
+    alt: "Product lifestyle video",
+    sources: [
+      {
+        url,
+        mimeType: "video/mp4",
+        format: "mp4",
+        width: 1080,
+        height: 1080,
+      },
+    ],
+    previewImage: { url: poster.url },
   };
 }
 
@@ -67,6 +92,10 @@ export const mockProducts: Product[] = [
     ],
     featuredImage: hatImages[0]!,
     images: [hatImages[0]!],
+    media: [
+      imageToMedia(hatImages[0]!),
+      mockVideo("/mock/products/sample-video.mp4", hatImages[0]!),
+    ],
     seo: {
       title: "CD Uppercase // White",
       description: "CommonDad hat.",
@@ -98,6 +127,7 @@ export const mockProducts: Product[] = [
     ],
     featuredImage: hatImages[1]!,
     images: [hatImages[1]!],
+    media: [imageToMedia(hatImages[1]!)],
     seo: {
       title: "CD Initials // Camo",
       description: "CommonDad hat.",
@@ -129,6 +159,7 @@ export const mockProducts: Product[] = [
     ],
     featuredImage: hatImages[2]!,
     images: [hatImages[2]!],
+    media: [imageToMedia(hatImages[2]!)],
     seo: {
       title: "CD Initials // Forest Green",
       description: "CommonDad hat.",
@@ -160,6 +191,7 @@ export const mockProducts: Product[] = [
     ],
     featuredImage: hatImages[3]!,
     images: [hatImages[3]!],
+    media: [imageToMedia(hatImages[3]!)],
     seo: {
       title: "CD Father Figure // Blue + Teal",
       description: "CommonDad hat.",
@@ -191,6 +223,7 @@ export const mockProducts: Product[] = [
     ],
     featuredImage: hatImages[4]!,
     images: [hatImages[4]!],
+    media: [imageToMedia(hatImages[4]!)],
     seo: {
       title: "CD Initials // Mocha Corduroy",
       description: "CommonDad hat.",
@@ -222,6 +255,7 @@ export const mockProducts: Product[] = [
     ],
     featuredImage: hatImages[5]!,
     images: [hatImages[5]!],
+    media: [imageToMedia(hatImages[5]!)],
     seo: {
       title: "CD Uppercase // Black",
       description: "CommonDad hat.",
@@ -253,6 +287,7 @@ export const mockProducts: Product[] = [
     ],
     featuredImage: hatImages[6]!,
     images: [hatImages[6]!],
+    media: [imageToMedia(hatImages[6]!)],
     seo: {
       title: "CD Uppercase // Forest Green",
       description: "CommonDad hat.",

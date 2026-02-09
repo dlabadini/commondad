@@ -3,6 +3,7 @@ import { GridTileImage } from "components/grid/tile";
 import { Product } from "lib/shopify/types";
 import Link from "next/link";
 import { ProductCardActions } from "components/product-card-actions";
+import { productHasVideo } from "lib/shopify/media";
 
 export default function ProductGridItems({
   products,
@@ -28,6 +29,7 @@ export default function ProductGridItems({
               src={product.featuredImage?.url}
               fill
               sizes="(min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw"
+              hasVideo={productHasVideo(product)}
               actions={<ProductCardActions product={product} />}
             />
           </Link>

@@ -105,6 +105,7 @@ export default function WishlistPage() {
                   descriptionHtml: "",
                   availableForSale: true,
                   images: [],
+                  media: [],
                   seo: { title: item.title, description: "" },
                   tags: [],
                   updatedAt: item.addedAt,

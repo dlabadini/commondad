@@ -2,6 +2,7 @@ import { getCollectionProducts } from "lib/shopify";
 import Link from "next/link";
 import { GridTileImage } from "./grid/tile";
 import { ProductCardActions } from "./product-card-actions";
+import { productHasVideo } from "lib/shopify/media";
 
 export async function Carousel() {
   // Collections that start with `hidden-*` are hidden from the search page.
@@ -36,6 +37,7 @@ export async function Carousel() {
                 src={product.featuredImage?.url}
                 fill
                 sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                hasVideo={productHasVideo(product)}
                 actions={<ProductCardActions product={product} />}
               />
             </Link>

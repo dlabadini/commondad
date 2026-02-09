@@ -47,6 +47,36 @@ export type Image = {
   height: number;
 };
 
+export type VideoSource = {
+  url: string;
+  mimeType: string;
+  format: string;
+  width: number;
+  height: number;
+};
+
+export type MediaImage = {
+  mediaContentType: "IMAGE";
+  alt: string;
+  image: Image;
+};
+
+export type Video = {
+  mediaContentType: "VIDEO";
+  alt: string;
+  sources: VideoSource[];
+  previewImage: { url: string } | null;
+};
+
+export type ExternalVideo = {
+  mediaContentType: "EXTERNAL_VIDEO";
+  alt: string;
+  embedUrl: string;
+  host: string;
+};
+
+export type MediaItem = MediaImage | Video | ExternalVideo;
+
 export type Menu = {
   title: string;
   path: string;
@@ -68,9 +98,10 @@ export type Page = {
   updatedAt: string;
 };
 
-export type Product = Omit<ShopifyProduct, "variants" | "images"> & {
+export type Product = Omit<ShopifyProduct, "variants" | "images" | "media"> & {
   variants: ProductVariant[];
   images: Image[];
+  media: MediaItem[];
 };
 
 export type ProductOption = {
@@ -130,6 +161,7 @@ export type ShopifyProduct = {
   variants: Connection<ProductVariant>;
   featuredImage: Image;
   images: Connection<Image>;
+  media: Connection<MediaImage | Video | ExternalVideo>;
   seo: SEO;
   tags: string[];
   updatedAt: string;

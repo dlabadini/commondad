@@ -2,10 +2,11 @@ import { GridTileImage } from "components/grid/tile";
 import Footer from "components/layout/footer";
 import { Gallery } from "components/product/gallery";
 import { ProductCardActions } from "components/product-card-actions";
+import { productHasVideo } from "lib/shopify/media";
 import { ProductDescription } from "components/product/product-description";
 import { HIDDEN_PRODUCT_TAG } from "lib/constants";
 import { getProduct, getProductRecommendations } from "lib/shopify";
-import type { Image } from "lib/shopify/types";
+import type { Image, MediaItem } from "lib/shopify/types";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -90,6 +91,7 @@ export default async function ProductPage(props: {
               }
             >
               <Gallery
+                media={product.media.slice(0, 10)}
                 images={product.images.slice(0, 5).map((image: Image) => ({
                   src: image.url,
                   altText: image.altText,
@@ -140,6 +142,7 @@ async function RelatedProducts({ id }: { id: string }) {
                 src={product.featuredImage?.url}
                 fill
                 sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
+                hasVideo={productHasVideo(product)}
                 actions={<ProductCardActions product={product} />}
               />
             </Link>
