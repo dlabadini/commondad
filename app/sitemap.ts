@@ -1,3 +1,4 @@
+import { getCrewCities, getRaces } from "lib/crew";
 import { getCollections, getPages, getProducts } from "lib/shopify";
 import { baseUrl, validateEnvironmentVariables } from "lib/utils";
 import { MetadataRoute } from "next";
@@ -12,9 +13,11 @@ export const dynamic = "force-dynamic";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   validateEnvironmentVariables();
 
-  const routesMap = [""].map((route) => ({
+  const now = new Date().toISOString();
+
+  const routesMap = ["", "/crew", "/races"].map((route) => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString(),
+    lastModified: now,
   }));
 
   const collectionsPromise = getCollections().then((collections) =>
@@ -38,11 +41,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
   );
 
+  const crewCitiesPromise = getCrewCities().then((cities) =>
+    cities.map((city) => ({
+      url: `${baseUrl}/crew/${city.slug}`,
+      lastModified: now,
+    })),
+  );
+
+  const racesPromise = getRaces().then((races) =>
+    races.map((race) => ({
+      url: `${baseUrl}/races/${race.slug}`,
+      lastModified: now,
+    })),
+  );
+
   let fetchedRoutes: Route[] = [];
 
   try {
     fetchedRoutes = (
-      await Promise.all([collectionsPromise, productsPromise, pagesPromise])
+      await Promise.all([
+        collectionsPromise,
+        productsPromise,
+        pagesPromise,
+        crewCitiesPromise,
+        racesPromise,
+      ])
     ).flat();
   } catch (error) {
     throw JSON.stringify(error, null, 2);

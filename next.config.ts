@@ -17,6 +17,12 @@ export default {
         hostname: "common.dad",
         pathname: "/cdn/shop/files/**",
       },
+      // Intervals API images (when real API is connected).
+      {
+        protocol: "https",
+        hostname: "*.intervals.icu",
+        pathname: "/**",
+      },
     ],
   },
 };

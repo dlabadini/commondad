@@ -320,10 +320,14 @@ export const mockMenus: Record<string, Menu[]> = {
   "commondad-header-menu": [
     { title: "Mission", path: "/mission" },
     { title: "Shop", path: "/search" },
+    { title: "Crew", path: "/crew" },
+    { title: "Races", path: "/races" },
   ],
   "commondad-footer-menu": [
     { title: "Mission", path: "/mission" },
     { title: "Shop", path: "/search" },
+    { title: "Crew", path: "/crew" },
+    { title: "Races", path: "/races" },
   ],
 };
 

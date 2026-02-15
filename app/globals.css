@@ -18,6 +18,18 @@
   --color-terracotta-700: #894b2e;
   --color-terracotta-800: #6f3e29;
   --color-terracotta-900: #5a3324;
+
+  --color-sage-100: #e8f0e8;
+  --color-sage-400: #9cba9c;
+  --color-sage-500: #7a9e7a;
+  --color-sage-600: #5f8a5f;
+  --color-sage-700: #4a7a4a;
+
+  --color-forest-100: #dceadc;
+  --color-forest-400: #6aaa6a;
+  --color-forest-500: #4a7a4a;
+  --color-forest-600: #3d6b3d;
+  --color-forest-700: #305830;
 }
 
 @layer base {
